@@ -1,0 +1,47 @@
+﻿@page
+@{
+	ViewData["Title"] = "Login";
+}
+
+<div class="container">
+	<h2>Login</h2>
+	<form id="loginForm">
+		<div class="form-group">
+			<label>Email</label>
+			<input type="email" id="email" required />
+			<div class="error" id="emailError"></div>
+		</div>
+		<div class="form-group">
+			<label>Password</label>
+			<input type="password" id="password" required />
+			<div class="error" id="passError"></div>
+		</div>
+		<button type="submit">Login</button>
+	</form>
+</div>
+
+@section Scripts {
+	<script>
+		document.getElementById('loginForm').addEventListener('submit', function (event) {
+			event.preventDefault();
+
+			const emailInput = document.getElementById('email').value.trim();
+			const passwordInput = document.getElementById('password').value;
+
+			//lay tu storage của web brower
+			const storedUser = JSON.parse(localStorage.getItem('registeredUser'));
+
+			if (!storedUser) {
+				alert('Không tìm thấy tài khoản nào. Vui lòng đăng ký trước.');
+				return;
+			}
+
+			if (emailInput === storedUser.email && passwordInput === storedUser.password) {
+				alert('Đăng nhập thành công!');
+				window.location.href = '/Homepage/Homepage';
+			} else {
+				alert('Email hoặc mật khẩu không đúng.');
+			}
+		});
+	</script>
+}

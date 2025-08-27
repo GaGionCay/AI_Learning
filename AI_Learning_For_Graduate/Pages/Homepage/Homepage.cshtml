@@ -1,0 +1,154 @@
+﻿@page
+@{
+	ViewData["Title"] = "Trang chủ";
+}
+<style>
+	.container {
+		max-width: 800px;
+		margin: 50px auto;
+		font-family: Arial, sans-serif;
+	}
+
+	#searchBar {
+		width: 100%;
+		padding: 10px;
+		margin-bottom: 20px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+	}
+
+	.product {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		padding: 10px;
+		margin-bottom: 15px;
+	}
+
+		.product img {
+			width: 100px;
+			height: auto;
+			border-radius: 5px;
+		}
+
+	.product-info {
+		flex: 1;
+		margin-left: 20px;
+		text-align: left;
+	}
+
+	.product button {
+		background-color: #28a745;
+		color: white;
+		border: none;
+		padding: 10px;
+		border-radius: 5px;
+		cursor: pointer;
+	}
+
+	#logoutBtn {
+		background-color: #dc3545;
+		color: white;
+		border: none;
+		padding: 10px 20px;
+		border-radius: 5px;
+		cursor: pointer;
+		margin-bottom: 20px;
+	}
+</style>
+
+<div class="container">
+	<h1 id="welcomeMessage">Chào mừng bạn!</h1>
+	<p id="userInfo"></p>
+	<button id="logoutBtn">Đăng xuất</button>
+
+	<input type="text" id="searchBar" placeholder="Tìm sản phẩm..." oninput="filterProducts()" />
+
+	<h2>Sản phẩm</h2>
+	<div id="productList">
+	</div>
+
+	<h3>🛒 Giỏ hàng: <span id="cartCount">0</span> sản phẩm</h3>
+</div>
+
+@section Scripts {
+	<script>
+		const user = JSON.parse(localStorage.getItem('registeredUser'));
+		if (user) {
+			document.getElementById('welcomeMessage').textContent = `Chào mừng, ${user.email}!`;
+			document.getElementById('userInfo').textContent = `Email của bạn là: ${user.email}`;
+		} else {
+			document.getElementById('welcomeMessage').textContent = 'Bạn chưa đăng nhập.';
+			document.getElementById('userInfo').textContent = 'Vui lòng đăng nhập để xem thông tin.';
+		}
+
+		document.getElementById('logoutBtn').addEventListener('click', function () {
+			localStorage.removeItem('registeredUser');
+			localStorage.removeItem('cart');
+			alert('Bạn đã đăng xuất!');
+			window.location.href = '/Account/Login';
+		});
+
+		let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+		const products = [
+			{
+				name: 'Áo thun',
+				description: 'Áo thun cotton mềm mại, thoáng mát.',
+				image: 'https://www.beyours.in/cdn/shop/files/black-classic-shirt.jpg?v=1744815740/100?text=Áo+thun'
+			},
+			{
+				name: 'Giày thể thao',
+				description: 'Giày chạy bộ siêu nhẹ, chống trượt.',
+				image: 'https://www.beyours.in/cdn/shop/files/black-classic-shirt.jpg?v=1744815740/100?text=Giày'
+			},
+			{
+				name: 'Balo laptop',
+				description: 'Balo chống nước, ngăn đựng laptop 15 inch.',
+				image: 'https://www.beyours.in/cdn/shop/files/black-classic-shirt.jpg?v=1744815740/100?text=Balo'
+			}
+		];
+
+		function renderProducts(filter = '') {
+			const list = document.getElementById('productList');
+			list.innerHTML = '';
+
+			products
+				.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()))
+				.forEach(product => {
+					const div = document.createElement('div');
+					div.className = 'product';
+					div.innerHTML = `
+						<img src="${product.image}" alt="${product.name}" />
+						<div class="product-info">
+							<h4>${product.name}</h4>
+							<p>${product.description}</p>
+						</div>
+						<button onclick="addToCart('${product.name}')">Thêm vào giỏ</button>
+					`;
+					list.appendChild(div);
+				});
+		}
+
+		function addToCart(productName) {
+			cart.push(productName);
+			localStorage.setItem('cart', JSON.stringify(cart));
+			updateCartCount();
+			alert(`Đã thêm "${productName}" vào giỏ hàng!`);
+		}
+
+		function updateCartCount() {
+			document.getElementById('cartCount').textContent = cart.length;
+		}
+
+		function filterProducts() {
+			const keyword = document.getElementById('searchBar').value;
+			renderProducts(keyword);
+		}
+
+		updateCartCount();
+		renderProducts();
+	</script>
+}

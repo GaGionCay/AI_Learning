@@ -1,0 +1,101 @@
+﻿@page
+@model ChatTestModel
+@{
+	Layout = null;
+	ViewData["Title"] = "Test Chat API";
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="utf-8" />
+	<title>@ViewData["Title"]</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 40px;
+		}
+
+		.chat-box {
+			border: 1px solid #ccc;
+			border-radius: 8px;
+			padding: 20px;
+			max-width: 600px;
+			margin: auto;
+			background-color: #f9f9f9;
+		}
+
+		.chat-log {
+			max-height: 300px;
+			overflow-y: auto;
+			background-color: #fff;
+			padding: 10px;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			margin-bottom: 10px;
+		}
+
+			.chat-log p {
+				margin: 5px 0;
+			}
+
+		input[type="text"] {
+			width: 80%;
+			padding: 10px;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+		}
+
+		button {
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<div class="chat-box">
+		<h2>🧠 Test Chat với Ollama</h2>
+		<div class="chat-log" id="chatLog"></div>
+		<input type="text" id="messageInput" placeholder="Nhập câu hỏi..." />
+		<button onclick="sendMessage()">Gửi</button>
+	</div>
+
+	<script>
+		async function sendMessage() {
+			const input = document.getElementById('messageInput');
+			const chatLog = document.getElementById('chatLog');
+			const message = input.value.trim();
+
+			if (!message) {
+				alert('Vui lòng nhập nội dung!');
+				return;
+			}
+
+			chatLog.innerHTML += `<p><strong>Bạn:</strong> ${message}</p>`;
+			input.value = '';
+
+					try {
+			const response = await fetch('/api/chat', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ message })
+			});
+
+			if (!response.ok) {
+				throw new Error(`Lỗi HTTP: ${response.status}`);
+			}
+
+			const data = await response.json();
+			chatLog.innerHTML += `<p><strong>AI:</strong> ${data.reply}</p>`;
+			chatLog.scrollTop = chatLog.scrollHeight;
+		} catch (error) {
+			chatLog.innerHTML += `<p><strong>AI:</strong> Lỗi khi gọi API: ${error.message}</p>`;
+			}
+		}
+	</script>
+</body>
+</html>

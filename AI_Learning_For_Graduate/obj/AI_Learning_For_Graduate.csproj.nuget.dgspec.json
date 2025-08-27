@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\forProjects\\AI_Learning_For_Graduate\\AI_Learning_For_Graduate\\AI_Learning_For_Graduate.csproj": {}
+    "D:\\GitHub\\AI_Learning\\AI_Learning_For_Graduate\\AI_Learning_For_Graduate.csproj": {}
   },
   "projects": {
-    "D:\\forProjects\\AI_Learning_For_Graduate\\AI_Learning_For_Graduate\\AI_Learning_For_Graduate.csproj": {
+    "D:\\GitHub\\AI_Learning\\AI_Learning_For_Graduate\\AI_Learning_For_Graduate.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\forProjects\\AI_Learning_For_Graduate\\AI_Learning_For_Graduate\\AI_Learning_For_Graduate.csproj",
+        "projectUniqueName": "D:\\GitHub\\AI_Learning\\AI_Learning_For_Graduate\\AI_Learning_For_Graduate.csproj",
         "projectName": "AI_Learning_For_Graduate",
-        "projectPath": "D:\\forProjects\\AI_Learning_For_Graduate\\AI_Learning_For_Graduate\\AI_Learning_For_Graduate.csproj",
+        "projectPath": "D:\\GitHub\\AI_Learning\\AI_Learning_For_Graduate\\AI_Learning_For_Graduate.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "D:\\forProjects\\AI_Learning_For_Graduate\\AI_Learning_For_Graduate\\obj\\",
+        "outputPath": "D:\\GitHub\\AI_Learning\\AI_Learning_For_Graduate\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

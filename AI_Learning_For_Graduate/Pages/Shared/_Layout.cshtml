@@ -42,6 +42,17 @@
         </div>
     </footer>
 
+    <div id="chatbot-container" style="position: fixed; bottom: 20px; right: 20px; width: 300px; background: white; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); z-index: 9999; font-family: Arial, sans-serif;">
+        <div style="background: #007bff; color: white; padding: 10px; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+            🤖 AI Chatbot
+        </div>
+        <div id="chat-messages" style="height: 200px; overflow-y: auto; padding: 10px;"></div>
+        <div style="display: flex; border-top: 1px solid #ccc;">
+            <input type="text" id="chat-input" placeholder="Nhập tin nhắn..." style="flex: 1; padding: 8px; border: none;" />
+            <button id="chat-send" style="background: #007bff; color: white; border: none; padding: 8px 12px;">Gửi</button>
+        </div>
+    </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -49,3 +60,35 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+<script>
+    document.getElementById("chat-send").addEventListener("click", async function () {
+        const input = document.getElementById("chat-input");
+        const message = input.value.trim();
+        if (!message) return;
+
+        appendMessage("Bạn", message);
+        input.value = "";
+
+        try {
+            const response = await fetch("/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: message })
+            });
+
+            const data = await response.json();
+            appendMessage("AI", data.reply);
+        } catch (error) {
+            appendMessage("AI", "Lỗi kết nối đến máy chủ.");
+        }
+    });
+
+    function appendMessage(sender, text) {
+        const container = document.getElementById("chat-messages");
+        const msg = document.createElement("div");
+        msg.innerHTML = `<strong>${sender}:</strong> ${text}`;
+        msg.style.marginBottom = "8px";
+        container.appendChild(msg);
+        container.scrollTop = container.scrollHeight;
+    }
+</script>

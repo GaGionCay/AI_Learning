@@ -1,0 +1,56 @@
+﻿@page
+@model CVGeneratorModel
+@{
+    ViewData["Title"] = "Tạo CV bằng AI hoặc thủ công";
+}
+
+<h2 class="mb-4">Tạo CV</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label for="Prompt" class="form-label">Mô tả yêu cầu CV (prompt)</label>
+        <textarea class="form-control" id="Prompt" name="Prompt" rows="3">@Model.Prompt</textarea>
+        <button type="submit" name="mode" value="ai" class="btn btn-info mt-2">Generate từ AI</button>
+    </div>
+
+    <hr />
+
+    <h4 class="mt-4">Thông tin CV</h4>
+
+    <div class="mb-3">
+        <label for="FullName" class="form-label">Họ và tên</label>
+        <input type="text" class="form-control" id="FullName" name="FullName" value="@Model.FullName" />
+    </div>
+
+    <div class="mb-3">
+        <label for="Education" class="form-label">Học vấn</label>
+        <textarea class="form-control" id="Education" name="Education" rows="2">@Model.Education</textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="Experience" class="form-label">Kinh nghiệm làm việc</label>
+        <textarea class="form-control" id="Experience" name="Experience" rows="3">@Model.Experience</textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="Skills" class="form-label">Kỹ năng</label>
+        <textarea class="form-control" id="Skills" name="Skills" rows="2">@Model.Skills</textarea>
+    </div>
+
+    <button type="submit" name="mode" value="manual" class="btn btn-success">Lưu CV thủ công</button>
+</form>
+
+@if (!string.IsNullOrWhiteSpace(Model.FullName))
+{
+    <hr />
+    <h3 class="mt-5">📄 Preview CV</h3>
+    <div class="border rounded p-4 bg-light">
+        <h4 class="fw-bold">@Model.FullName</h4>
+
+        <p><strong>🎓 Học vấn:</strong><br />@Model.Education</p>
+
+        <p><strong>💼 Kinh nghiệm:</strong><br />@Model.Experience</p>
+
+        <p><strong>🛠️ Kỹ năng:</strong><br />@Model.Skills</p>
+    </div>
+}
