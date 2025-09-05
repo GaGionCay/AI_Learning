@@ -44,13 +44,36 @@
 {
     <hr />
     <h3 class="mt-5">📄 Preview CV</h3>
-    <div class="border rounded p-4 bg-light">
-        <h4 class="fw-bold">@Model.FullName</h4>
+    <div class="card shadow-sm mb-5">
+        <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+                <div class="flex-grow-1">
+                    <h4 class="fw-bold mb-0">@Model.FullName</h4>
+                    <small class="text-muted">Lập trình viên phần mềm</small>
+                </div>
+                <div>
+                    <img src="https://via.placeholder.com/80x80.png?text=Avatar" class="rounded-circle border" alt="Avatar" />
+                </div>
+            </div>
 
-        <p><strong>🎓 Học vấn:</strong><br />@Model.Education</p>
+            <hr />
 
-        <p><strong>💼 Kinh nghiệm:</strong><br />@Model.Experience</p>
+            <h5 class="text-primary">🎓 Học vấn</h5>
+            <p>@Model.Education</p>
 
-        <p><strong>🛠️ Kỹ năng:</strong><br />@Model.Skills</p>
+            <h5 class="text-primary">💼 Kinh nghiệm</h5>
+            <p>@Model.Experience</p>
+
+            <h5 class="text-primary">🛠️ Kỹ năng</h5>
+            <p>@Model.Skills</p>
+        </div>
+    </div>
+}
+@if (ViewData["IPFS_CID"] != null)
+{
+    <div class="alert alert-success mt-4">
+        ✅ CV đã được lưu lên IPFS qua Pinata! <br />
+        CID: <strong>@ViewData["IPFS_CID"]</strong> <br />
+        Link: <a href="https://gateway.pinata.cloud/ipfs/@ViewData["IPFS_CID"]" target="_blank">Xem CV trên IPFS</a>
     </div>
 }

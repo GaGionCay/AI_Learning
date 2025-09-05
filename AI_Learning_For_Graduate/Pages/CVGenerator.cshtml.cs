@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Pinata.Client;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
@@ -68,9 +69,22 @@ namespace AI_Learning_For_Graduate.Pages
                 }
             }
 
+            // Chỉ upload lên IPFS nếu người dùng nhấn nút "Lưu CV thủ công"
+            if (mode == "manual" && !string.IsNullOrWhiteSpace(FullName))
+            {
+                string cvText = $@"
+Họ tên: {FullName}
+Học vấn: {Education}
+Kinh nghiệm: {Experience}
+Kỹ năng: {Skills}
+";
+
+                string cid = await UploadCVToPinata("cv.txt", cvText);
+                ViewData["IPFS_CID"] = cid;
+            }
+
             return Page();
         }
-
         private string BuildStructuredPrompt(string userPrompt)
         {
             return $@"{userPrompt}
@@ -102,6 +116,32 @@ Chỉ trả về đúng các phần trên, không thêm mô tả hoặc định 
             var pattern = $"{startPattern}(.*?){endPattern}";
             var match = Regex.Match(text, pattern, RegexOptions.Singleline | RegexOptions.IgnoreCase);
             return match.Success ? match.Groups[1].Value.Trim() : "";
+        }
+        private async Task<string> UploadCVToPinata(string fileName, string content)
+        {
+            var config = new Config
+            {
+                ApiKey = "99900a20c7957f982fca",
+                ApiSecret = "a074f223a5881d89253c8b5457ce209e8c9feb1d8e0bcc83dabf2537a56fa99d"
+            };
+
+            var client = new PinataClient(config);
+
+            var metadata = new PinataMetadata
+            {
+                Name = "CV_" + FullName,
+                KeyValues = { { "Author", FullName } }
+            };
+
+            var options = new PinataOptions(); // có thể để trống nếu không cần custom pin policy
+
+            var response = await client.Pinning.PinFileToIpfsAsync(pinContent =>
+            {
+                var file = new StringContent(content, Encoding.UTF8, "text/plain");
+                pinContent.AddPinataFile(file, fileName);
+            }, metadata, options);
+
+            return response.IpfsHash; // CID của file
         }
     }
 }

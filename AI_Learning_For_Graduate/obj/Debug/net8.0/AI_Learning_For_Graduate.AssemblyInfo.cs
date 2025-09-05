@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AI_Learning_For_Graduate")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f657bcbe086ca44e51c501d44f454e197fd8c8f2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+15738909c74f4a85cf86868a7f61324d20ebd34c")]
 [assembly: System.Reflection.AssemblyProductAttribute("AI_Learning_For_Graduate")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AI_Learning_For_Graduate")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
